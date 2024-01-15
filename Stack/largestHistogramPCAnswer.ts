@@ -8,24 +8,25 @@ function largestRectangleArea(heights: number[]): number {
     let area: number = 0;
 
     for (let i = 0; i < heights.length; i++) {
-        let currArea = 0;
-        if (heights[i] < heights[i - 1]) {
-            let unit = stack.pop() as StackNode;
-            let val = unit.val;
-            let j = i;
-            while (val > heights[i - 1] && stack.length) {
-                currArea += heights[j - 1] * (j - j) + 1;
-                unit = stack.pop() as StackNode;
-                val = unit.val as number;
-                j = unit.index as number;
+        if (heights[i] < heights[i - 1] || !heights[i]) {
+            let stop = heights[i];
+            let unit: StackNode = stack[stack.length - 1];
+            let j = 0;
+            while (stack.length) {
+                let currArea = 0;
+                unit = stack[stack.length - 1] as StackNode;
+                if (stop > unit.val) {
+                    break;
+                }
+                stack.pop();
+                currArea = unit.val * (i - unit.index);
+                area = Math.max(currArea, area);
+                j = unit.index;
             }
             stack.push({ val: heights[i], index: j });
-            console.log('newStack', stack);
-            return 0;
         } else {
             stack.push({ val: heights[i], index: i });
         }
-        console.log('stack', stack);
     }
-    return 0;
+    return area;
 }

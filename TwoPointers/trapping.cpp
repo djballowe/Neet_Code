@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
@@ -6,30 +7,33 @@ typedef unsigned int uint;
 class Solution {
 public:
     int trap(std::vector<int> &height) {
-        std::vector<int> stack;
+        std::vector<uint> stack;
         size_t i = 0;
         size_t l, r;
-        uint waterTotal = 0, water = 0, maxHeight = 0;
+        uint waterTotal = 0, water = 0;
+        uint maxHeight = std::numeric_limits<uint>::max();
+
         while (i < height.size()) {
             if (height[i] > height[i + 1]) {
                 l = i;
                 r = i + 1;
                 stack.push_back(height[l]);
-                while (height[r] < stack.back()) {
+                maxHeight = height[i];
+                int count = 0;
+                while (height[r] < maxHeight) {
                     stack.push_back(height[r]);
                     r++;
                 }
                 for (int value : stack) {
                     std::cout << value << " ";
                 }
-                maxHeight = height[r];
+                maxHeight = std::min(maxHeight, static_cast<uint>(height[r]));
                 while (stack.size()) {
-                    if (stack.back() < maxHeight) {
-                        water = maxHeight - stack.back();
-                        waterTotal += water;
-                    }
+                    water = maxHeight - stack.back();
+                    waterTotal += water;
                     stack.pop_back();
                 }
+                std::cout << "Total: " << waterTotal << std::endl;
                 i = r;
             } else {
                 i++;

@@ -3,6 +3,7 @@
 #include <vector>
 
 typedef unsigned int uint;
+// TODO do this with two pointer 
 
 class Solution {
 public:

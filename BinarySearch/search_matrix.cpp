@@ -7,24 +7,42 @@ using std::endl;
 using std::vector;
 
 class Solution {
-private: 
-    int getInnerIndex(int l, int r) {
-        return 1;
-    }
-
-public: 
+public:
     bool searchMatrix(vector<vector<int>> &matrix, int target) {
-        uint32_t l = 0, r = matrix.back().size(), inner = matrix[0].size();
-        cout << r << '\n';
+        int top = 0;
+        int bot = matrix.size() - 1;
+
+        while (top < bot) {
+            int mid = top + (bot - top) / 2;
+            if (matrix[mid][0] == target) {
+                return true;
+            }
+            if (matrix[mid][0] < target &&
+                matrix[mid + 1][0] > target) {
+                top = mid;
+                break;
+            } else if (matrix[mid][0] < target) {
+                top = mid + 1;
+            } else {
+                bot = mid - 1;
+            }
+        }
+        cout << top << bot << endl;
+
+        int l = 0;
+        int r = matrix[0].size() - 1;
 
         while (l <= r) {
-            int m = l + (r + l) / 2;
-            int l_outer = l / inner;
-            int l_inner = inner * (l / inner);
-            int l_index[2] = {l_outer, l_inner }; 
-            int r_index = r / matrix[0].size();
-
+            int m = l + (r - l) / 2;
+            if (matrix[top][m] > target) {
+                r = m - 1;
+            } else if (matrix[top][m] < target) {
+                l = m + 1;
+            } else {
+                return true;
+            }
         }
-        return true;
+
+        return false;
     }
 };

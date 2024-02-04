@@ -9,10 +9,19 @@ public:
         int sum = 0;
         int average = 0;
         int ans = 0;
+        int l = 0;
 
-        for (int l = 0; l < arr.size(); r++) {
-            sum += arr[l + k - 1]
+        for (int r = 0; r < arr.size(); r++) {
+            sum += arr[r];
+            if ((r - l) + 1 == k) {
+                average = sum / k;
+                if (average >= threshold) {
+                    ans++;
+                }
+                sum -= arr[l++];
+            }
         }
+
         return ans;
     }
 };

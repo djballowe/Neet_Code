@@ -1,4 +1,3 @@
-#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -21,7 +20,6 @@ public:
                 sum -= arr[l++];
             }
         }
-
         return ans;
     }
 };

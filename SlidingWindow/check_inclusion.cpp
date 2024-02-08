@@ -1,30 +1,45 @@
-#include <iostream>
+// TODO do this again you absolute loser
 #include <string>
 #include <vector>
 
 using namespace std;
 
 class Solution {
-public:
-    int checkInclusion(string s1, string s2) {
-        vector<int> freq(26);
-        int l = 0;
-        for (int i = 0; i < s1.size(); i++) {
-            freq[s1[i] - 'a']++;
-        }
-
-        for (int r = 0; r < s2.size(); r++) {
-            cout << freq[s2[r] - 'a'] << "\n";
-            if (freq[s2[r] - 'a'] > 0 && s1[r - l] == s2[r]) {
-                //cout << s2[r] << endl;
-            } else {
-                l = r;
+private:
+    int isValid(vector<int> &freq) {
+        for (int i = 0; i < freq.size(); i++) {
+            if (freq[i] != 0) {
+                return false;
             }
         }
+        return true;
+    }
 
-        return 1;
+public:
+    int checkInclusion(string s1, string s2) {
+        if (s1.size() > s2.size()) {
+            return false;
+        }
+
+        vector<int> freq(26);
+       
+        for (int i = 0; i < s1.size(); i++) {
+            freq[s1[i] - 'a']++;
+            freq[s2[i] - 'a']--;      
+        }
+
+        if (isValid(freq)) {
+            return true;
+        }
+
+        for (int i = s1.size(); i < s2.size(); i++) {
+            freq[s2[i] - 'a']--;
+            freq[s2[i - s1.size()] - 'a']++;
+            if (isValid(freq)) {
+                return true;
+            }
+        }
+        return false;
     }
 };
 
-// "eidboaoo"
-// "eidbaooo"

@@ -21,23 +21,17 @@ public:
         int l = 1;
         int largest = INT_MIN;
 
-        for (int i = 0; i < k; i++) {
-            largest = max(largest, nums[i]);
-        }
-
-        ans.push_back(largest);
-
-        for (int r = k; r < nums.size(); r++) {
-            if (nums[l - 1] == largest) {
+        for (int r = k - 1; r < nums.size(); r++) {
+            if (r == k - 1 || nums[l - 1] == largest) {
+                cout << r << ", " << "";
                 largest = calculateLargest(nums, l, r);
-            } else if (nums[r] > largest) {
-                largest = nums[r];
+            } else {
+                largest = max(largest, nums[r]);
             }
             ans.push_back(largest);
             l++;
-            cout << largest << "\n";
+            //cout << largest << ", " << "";
         }
-
         return ans;
     }
 };

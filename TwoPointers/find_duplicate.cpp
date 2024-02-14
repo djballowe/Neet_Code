@@ -1,4 +1,3 @@
-#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -6,14 +5,20 @@ using namespace std;
 class Solution {
 public:
     int findDuplicate(vector<int> &nums) {
-        unordered_map<int, int> map;
+        int fast = 0, slow = 0;
 
-        for (int i = 0; i < nums.size(); i++) {
-            if (map.find(nums[i]) != map.end()) {
-                return nums[i];
-            }
-            map[nums[i]] = 1;
-        }
-        return -1;       
+        do {
+            fast = nums[nums[fast]];
+            slow = nums[slow];
+        } while (fast != slow);
+
+        int slow2 = 0;
+
+        do {
+            slow = nums[slow];
+            slow2 = nums[slow2];
+        } while (slow2 != slow);
+
+        return slow2;
     }
 };

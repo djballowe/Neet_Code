@@ -1,3 +1,7 @@
+#include <algorithm>
+
+using namespace std;
+
 struct ListNode {
     int val;
     ListNode *next;
@@ -8,7 +12,7 @@ struct ListNode {
 
 class Solution {
 public:
-    bool pairSum(ListNode *head) {
+    int pairSum(ListNode *head) {
         ListNode *fast = head;
         ListNode *slow = head;
         int ans = 0;
@@ -18,6 +22,26 @@ public:
             fast = fast->next->next;
         }
 
-        return slow->val;
+        ListNode *prevNode = nullptr;
+        ListNode *currNode = slow;
+
+
+        while (currNode) {
+            ListNode *temp = currNode->next;
+            currNode->next = prevNode;
+            prevNode = currNode;
+            currNode = temp;
+        }
+
+        slow = head;
+        ListNode *twinHead = prevNode;
+
+        while (twinHead) {
+            ans = max(slow->val + twinHead->val, ans);
+            slow = slow->next;
+            twinHead = twinHead->next;
+        }
+
+        return ans;
     }
 };

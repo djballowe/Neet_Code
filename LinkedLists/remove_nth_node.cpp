@@ -1,7 +1,3 @@
-#include <iostream>
-
-using namespace std;
-
 struct ListNode {
     int val;
     ListNode *next;
@@ -13,6 +9,24 @@ struct ListNode {
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode *head, int n) {
-                
+        ListNode *prev = head;
+        ListNode *currNode = head;
+        int count = 0;
+
+        while (currNode) {
+            if (count > n) {
+                prev = prev->next;
+            }
+            currNode = currNode->next;
+            count++;
+        }
+
+        if (count <= n) {
+            head = head->next;
+        } else { 
+            prev->next = prev->next->next;
+        }
+
+        return head;
     }
 };

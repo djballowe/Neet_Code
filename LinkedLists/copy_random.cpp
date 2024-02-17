@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <unordered_map>
 
 class Node {
 public:
@@ -16,12 +17,22 @@ public:
 class Solution {
 public:
     Node *copyRandomList(Node *head) {
-        Node *copy = new Node(head->val);
+        std::unordered_map<Node *, Node *> map;
         Node *currNode = head;
 
         while (currNode) {
+            map[currNode] = new Node(currNode->val);
             currNode = currNode->next;
-            copy->next = currNode;
         }
+
+        currNode = head;
+        while (currNode) {
+            Node *newNode = map[currNode];
+            newNode->next = map[currNode->next];
+            newNode->random = map[currNode->random];
+            currNode = currNode->next;
+        }
+
+        return map[head];
     }
 };

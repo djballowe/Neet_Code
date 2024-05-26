@@ -1,4 +1,3 @@
-#include <vector>
 struct TreeNode {
     int val;
     TreeNode *left;
@@ -10,29 +9,20 @@ struct TreeNode {
 };
 
 class Solution {
-private:
-    std:: vector<int> tree1;
-    std:: vector<int> tree2;
-
-    TreeNode *storeTree(TreeNode *root) {
-            
-    }
-
 public:
     bool isSameTree(TreeNode *p, TreeNode *q) {
-        storeTree(p);
-        storeTree(q);
-        if (tree1.size() != tree2.size()) {
+        if (!p && !q) {
+            return true;
+        }
+
+        if (!p || !q) {
             return false;
         }
 
-        for (int i = 0; i < tree1.size(); i++) {
-            if (tree1[i] != tree2[i]) {
-                return false;
-            }
+        if (p->val != q->val) {
+            return false;
         }
 
-        return true;
+        return isSameTree(p->right, q->right) && isSameTree(p->left, q->left);
     }
-
 };

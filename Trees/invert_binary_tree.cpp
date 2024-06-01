@@ -1,5 +1,3 @@
-#include <algorithm>
-
 struct TreeNode {
     int val;
     TreeNode *left;
@@ -17,9 +15,9 @@ public:
             return nullptr;
         }
 
-        TreeNode *temp = root->right;
-        root->right = root->left;
-        root->left = temp;
+        TreeNode *temp = root->left;
+        root->left = root->right;
+        root->right = temp;
         invertTree(root->right);
         invertTree(root->left);
         return root;

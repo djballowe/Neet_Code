@@ -9,27 +9,26 @@ struct TreeNode {
 };
 
 class Solution {
-private:
-    void inorder(TreeNode *root, int k, int &ans) {
-        if (!root) {
-            return;
-        }
-
-        inorder(root->left, k, ans);
-        k--;
-        if (k == 0) {
-            ans = root->val;
-            return;
-        }
-        inorder(root->right, k, ans);
-    }
-
 public:
     int kthSmallest(TreeNode *root, int k) {
         int ans = 0;
-
-        inorder(root, k, ans);
-
+        dfs(root, k, ans);
         return ans;
+    }
+
+private:
+    int dfs(TreeNode *root, int &k, int &ans) {
+        if (!root) {
+            return 0;
+        }
+
+        dfs(root->left, k, ans);
+        k--;
+        if (k == 0) {
+            ans = root->val;
+            return root->val;
+        }
+        dfs(root->right, k, ans);
+        return 0;
     }
 };

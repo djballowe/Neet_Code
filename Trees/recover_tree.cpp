@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -16,34 +16,22 @@ struct TreeNode {
 class Solution {
 private:
     vector<int> ans;
-    int i = 0;
 
 public:
     void recoverTree(TreeNode *root) {
         dfs(root);
-        sort(ans.begin(), ans.end());
-        rebuild(root, i);
+        for (int i = 0; i < ans.size(); i++) {
+            cout << ans[i] << endl;
+        }
     }
 
-    void rebuild(TreeNode *root, int &i) {
+    void dfs(TreeNode *root) {
         if (!root) {
             return;
         }
 
-        rebuild(root->left, i);
-        root->val = ans[i++];
-        rebuild(root->right, i);
-        return;
-    }
-
-    vector<int> dfs(TreeNode *root) {
-        if (!root) {
-            return ans;
-        }
-
-        ans = dfs(root->left);
+        recoverTree(root->left);
         ans.push_back(root->val);
-        ans = dfs(root->right);
-        return ans;
+        recoverTree(root->right);
     }
 };

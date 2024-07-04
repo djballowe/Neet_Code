@@ -32,29 +32,30 @@ public:
 
     // Decodes your encoded data to tree.
     TreeNode *deserialize(string data) {
-        if (!data.size()) {
-            return nullptr;
-        }
         vector<int> arr = convertArray(data);
-
-        TreeNode *root = new TreeNode(arr[0]);
+        for (int i = 0; i < arr.size(); i++) {
+            cout << arr[i] << endl;
+        }
+        int i = 1;
+        TreeNode *root = new TreeNode(arr[i]);
         queue<TreeNode *> q;
         q.push(root);
-        int i = 1;
 
         while (i < arr.size()) {
-            if (arr[i] != 1001) {
-                TreeNode *curr = q.front();
-                q.pop();
-                if (i < arr.size()) {
-                    curr->left = new TreeNode(arr[i++]);
-                    q.push(curr->left);
-                }
-                if (i < arr.size() && arr[i] != 1001) {
-                    curr->right = new TreeNode(arr[i++]);
-                    q.push(curr->right);
-                }
+            TreeNode *current = q.front();
+            q.pop();
+
+            if (i < arr.size() && arr[i] != 1001) {
+                current->left = new TreeNode(arr[i]);
+                q.push(current->left);
             }
+            i++;
+
+            if (i < arr.size() && arr[i] != 1001) {
+                current->right = new TreeNode(arr[i]);
+                q.push(current->right);
+            }
+            i++;
         }
 
         return root;

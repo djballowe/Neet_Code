@@ -1,5 +1,3 @@
-#include <iostream>
-
 struct ListNode {
     int val;
     ListNode *next;
@@ -8,22 +6,20 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-using namespace std;
-
 class Solution {
 public:
     int findTheWinner(int n, int k) {
         int nodes = 1;
-        ListNode* head = new ListNode(nodes);
-        ListNode* currNode = head;
+        ListNode *head = new ListNode(nodes);
+        ListNode *currNode = head;
         while (nodes < n) {
             currNode->next = new ListNode(++nodes);
             currNode = currNode->next;
         }
         currNode->next = head;
 
-        ListNode* person = head;
-        ListNode* prevNode = currNode;
+        ListNode *person = head;
+        ListNode *prevNode = currNode;
         int count = 0;
         while (person->val != prevNode->val) {
             count = k;
@@ -39,4 +35,3 @@ public:
         return person->val;
     }
 };
-

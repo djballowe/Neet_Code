@@ -1,6 +1,4 @@
-#include <iostream>
 #include <queue>
-#include <vector>
 
 using namespace std;
 
@@ -18,27 +16,27 @@ class Solution {
 public:
     bool isSymmetric(TreeNode *root) {
         queue<TreeNode *> q;
-        int level = 1;
-        vector<int> order;
-        q.push(root);
+        q.push(root->left);
+        q.push(root->right);
 
         while (!q.empty()) {
-            TreeNode *currNode = q.front();
-            order.push_back(currNode->val);
+            TreeNode *node1 = q.front();
             q.pop();
-            if (currNode->left) {
-                q.push(currNode->left);
-                cout << currNode->left->val << endl;
-            }
-            if (currNode->right) {
-                q.push(currNode->right);
-                cout << currNode->right->val << endl;
-            }
-            if (currNode->left->left != currNode->right->right) {
+            TreeNode *node2 = q.front();
+            q.pop();
+            if ((!node1 && node2) || (node1 && !node2)) {
                 return false;
             }
+            if (node1 && node2) {
+                if (node1->val != node2->val) {
+                    return false;
+                }
+                q.push(node1->left);
+                q.push(node2->left);
+                q.push(node2->right);
+                q.push(node1->right);
+            }
         }
-
         return true;
     }
 };

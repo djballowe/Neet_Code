@@ -11,11 +11,15 @@ struct TreeNode {
 class Solution {
 public:
     bool isSameTree(TreeNode *p, TreeNode *q) {
-        if (!p && !q) {
+        if (!q && !p) {
             return true;
         }
 
-        if (!p || !q) {
+        if (!q && p) {
+            return false;
+        }
+
+        if (q && !p) {
             return false;
         }
 
@@ -23,6 +27,6 @@ public:
             return false;
         }
 
-        return isSameTree(p->right, q->right) && isSameTree(p->left, q->left);
+        return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
     }
 };

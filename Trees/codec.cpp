@@ -1,8 +1,5 @@
-#include <iostream>
-#include <queue>
 #include <sstream>
 #include <string>
-#include <vector>
 
 using namespace std;
 
@@ -17,76 +14,45 @@ class Codec {
 public:
     // Encodes a tree to a single string.
     string serialize(TreeNode *root) {
-        vector<string> serial;
-        string str = "";
-        dfs(root, serial);
-        for (int i = 0; i < serial.size(); i++) {
-            if (serial[i] == "null") {
-                str += "1001,";
-            } else {
-                str += serial[i] + ",";
-            }
-        }
-        return str;
+        string ans = "";
+        dfs(root, ans);
+        return ans;
     }
 
     // Decodes your encoded data to tree.
     TreeNode *deserialize(string data) {
-        vector<int> arr = convertArray(data);
-        for (int i = 0; i < arr.size(); i++) {
-            cout << arr[i] << endl;
+        if (data == "") {
+            return nullptr;
         }
-        int i = 1;
-        TreeNode *root = new TreeNode(arr[i]);
-        queue<TreeNode *> q;
-        q.push(root);
+        stringstream s(data);
 
-        while (i < arr.size()) {
-            TreeNode *current = q.front();
-            q.pop();
-
-            if (i < arr.size() && arr[i] != 1001) {
-                current->left = new TreeNode(arr[i]);
-                q.push(current->left);
-            }
-            i++;
-
-            if (i < arr.size() && arr[i] != 1001) {
-                current->right = new TreeNode(arr[i]);
-                q.push(current->right);
-            }
-            i++;
-        }
-
-        return root;
+        return buildTree(s);
     }
 
 private:
-    void dfs(TreeNode *root, vector<string> &serial) {
+    TreeNode *buildTree(stringstream &s) {
+        string str;
+        getline(s, str, ',');
+
+        if (str == "n") {
+            return nullptr;
+        } else {
+            TreeNode *node = new TreeNode(stoi(str));
+            node->left = buildTree(s);
+            node->right = buildTree(s);
+            return node;
+        }
+    }
+
+    void dfs(TreeNode *root, string &ans) {
         if (!root) {
-            serial.push_back("null");
+            ans.append("n,");
             return;
         }
 
-        serial.push_back(to_string(root->val));
-        dfs(root->left, serial);
-        dfs(root->right, serial);
+        ans.append(to_string(root->val) + ',');
+        dfs(root->left, ans);
+        dfs(root->right, ans);
         return;
     }
-
-    vector<int> convertArray(string data) {
-        vector<int> arr;
-        stringstream ss(data);
-        string item;
-
-        while (getline(ss, item, ',')) {
-            arr.push_back(stoi(item));
-        }
-
-        return arr;
-    }
 };
-
-// Your Codec object will be instantiated and called as such:
-// Codec ser, deser;
-// TreeNode* ans = deser.deserialize(ser.serialize(root));

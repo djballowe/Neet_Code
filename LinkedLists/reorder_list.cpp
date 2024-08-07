@@ -1,3 +1,8 @@
+#include <deque>
+#include <iostream>
+
+using namespace std;
+
 struct ListNode {
     int val;
     ListNode *next;
@@ -9,33 +14,34 @@ struct ListNode {
 class Solution {
 public:
     void reorderList(ListNode *head) {
-        ListNode *fast = head;
-        ListNode *slow = head;
+        deque<ListNode *> list;
+        ListNode *pointer = head;
 
-        while (fast && fast->next) {
-            slow = slow->next;
-            fast = fast->next->next;
+        while (pointer) {
+            list.push_back(pointer);
+            pointer = pointer->next;
         }
 
-        ListNode *middle = nullptr;
-        ListNode *currNode = slow;
+        int count = 1;
+        pointer = head;
+        list.pop_front();
 
-        while (currNode) {
-            ListNode *temp = currNode->next;
-            currNode->next = middle;
-            middle = currNode;
-            currNode = temp;
+        while (list.size()) {
+            if (count % 2 != 0) {
+                pointer->next = list.back();
+                list.pop_back();
+            } else {
+                pointer->next = list.front();
+                list.pop_front();
+            }
+            cout << pointer->val << endl;
+            cout << list.back()->val << endl;
+            count++;
+            pointer = pointer->next;
         }
 
-        currNode = head;
+        pointer->next = nullptr;
 
-        while (middle->next) {
-            ListNode *temp = currNode->next;
-            ListNode *midTemp = middle->next;
-            currNode->next = middle;
-            middle->next = temp;
-            currNode = temp;
-            middle = midTemp;
-        }
+        return;
     }
 };

@@ -1,3 +1,8 @@
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
 struct ListNode {
     int val;
     ListNode *next;
@@ -7,37 +12,37 @@ struct ListNode {
 };
 
 class Solution {
+    vector<int> sorted;
+
 public:
     ListNode *mergeTwoLists(ListNode *list1, ListNode *list2) {
+        traverseList(list1);
+        traverseList(list2);
 
-        if (list1 == nullptr && list2 == nullptr) {
-            return nullptr;
-        } else if (list1 == nullptr) {
-            return list2;
-        } else if (list2 == nullptr) {
-            return list1;
+        sort(sorted.begin(), sorted.end());
+
+        if (!sorted.size()) {
+            return {};
         }
 
-        ListNode *dummy = new ListNode();
-        ListNode *currNode = dummy;
+        ListNode *head = new ListNode(sorted[0]);
+        ListNode *currNode = head;
 
-        while (list1 && list2) {
-            if (list1->val >= list2->val) {
-                currNode->next = list2;
-                list2 = list2->next;
-            } else {
-                currNode->next = list1;
-                list1 = list1->next;
-            }
+        for (int i = 1; i < sorted.size(); i++) {
+            currNode->next = new ListNode(sorted[i]);
             currNode = currNode->next;
         }
 
-        if (list1 == nullptr) {
-            currNode->next = list2;
-        } else {
-            currNode->next = list1;
-        }
+        return head;
+    }
 
-        return dummy->next;
+private:
+    void traverseList(ListNode *head) {
+        ListNode *currNode = head;
+
+        while (currNode) {
+            sorted.push_back(currNode->val);
+            currNode = currNode->next;
+        }
     }
 };
